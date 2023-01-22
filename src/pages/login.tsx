@@ -98,8 +98,8 @@ export default function Login() {
                 <input type="password" value={password} onChange={(e) => { setPassword(e.currentTarget.value) }} className="border-2 border-gray-300 bg-slate-800 outline-none rounded-lg px-2 py-1" />
               </div>
               <div className="flex flex-row w-full items-center justify-evenly mt-4">
-                <button className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 rounded-sm px-[2ch]" onClick={(e) => { e.preventDefault(); login(); }}>Login</button>
-                <button className="bg-violet-500 hover:bg-violet-600 transition-colors duration-300 rounded-sm px-[2ch]" onClick={(e) => { e.preventDefault(); signUp() }} >SignUp</button>
+                <button className="bg-blue-500 p-2 hover:bg-blue-600 transition-colors duration-300 rounded-sm px-[2ch]" onClick={(e) => { e.preventDefault(); login(); }}>Login</button>
+                <button className="bg-violet-500 p-2 hover:bg-violet-600 transition-colors duration-300 rounded-sm px-[2ch]" onClick={(e) => { e.preventDefault(); signUp() }} >SignUp</button>
               </div>
             </div>
           )}
