@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 export default function MyPosts() {
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState<any[]>([])
   const router = useRouter();
 
   useEffect(() => {
@@ -22,19 +22,20 @@ export default function MyPosts() {
   const getPosts = async () => {
     setLoading(true);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/event/user`, {
-                        method: "GET",
-                        headers: {
-                          "Content-Type": "application/json",
-                          'x-auth-token': localStorage.getItem('token') || ''
-                        },
-                      })
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        'x-auth-token': localStorage.getItem('token') || ''
+      },
+    })
     const data = await res.json()
     setPosts(data.userEvents)
+    console.log(data.userEvents)
     setLoading(false)
   }
 
   useEffect(() => {
-    if(loggedIn) getPosts();
+    if (loggedIn) getPosts();
   }, [loggedIn])
 
   const [loading, setLoading] = useState(true);
@@ -58,13 +59,38 @@ export default function MyPosts() {
 
   if (!loggedIn) {
     return <Link href="/login"> Please Login To Continue</Link>
-  } 
+  }
 
   return (
     <div>
-      <h1>My Posts</h1>
-      {loading ? <div>Loading...<Spinner /></div> : posts.map((post, index) => <div>Post number{index} is</div>)}
+      <h1 className="font-bold text-3xl mx-2">My Posts</h1>
+      <div className="flex flex-row flex-wrap p-2 gap-2 md:justify-evenly justify-center">
+        {loading ? <div>Loading...<Spinner /></div> : posts.map((post) => {
+          return <Card post={post} key={post._id} />
+        })}
+      </div>
     </div>
   )
 
+}
+
+const Card = ({ post }: any) => {
+  return (
+    <>
+      <div key={post._id} className="flex flex-col w-96 mx-auto gap-4 md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2">
+        <div className="flex flex-col items-center">
+          <div className="font-black text-4xl">
+            <h2>{post.eventName}</h2>
+          </div>
+          <div className="flex w-full flex-col">
+            <div className="bg-blue-600 m-2 rounded-sm px-[2ch]">Accepted: {post.usersAccepted.length}</div>
+            <div className="bg-green-600 m-2 rounded-sm px-[2ch]">Required: {post.usersRequired}</div>
+          </div>
+        </div>
+        <div className="text-justify m-2 font-light h-full">
+          {post.description}
+        </div>
+      </div>
+    </>
+  )
 }
