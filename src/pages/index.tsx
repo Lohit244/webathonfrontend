@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import { useEffect, useRef, useState } from 'react'
 import autoAnimate from '@formkit/auto-animate'
 type apiResponse = {
@@ -161,7 +161,7 @@ const Spinner = () => {
 }
 
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${process.env.API_BASE}/event`)
   const data = await res.json()
   return {
