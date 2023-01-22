@@ -19,9 +19,6 @@ export default function MyPosts() {
     }
   })
 
-  if (!loggedIn) {
-    return <Link href="/login"> Please Login To Continue</Link>
-  }
 
   const [myPosts, setMyPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,6 +51,9 @@ export default function MyPosts() {
     )
   }
 
+  if (!loggedIn) {
+    return <Link href="/login"> Please Login To Continue</Link>
+  }
   return (
     <div>
       <h1>My Posts</h1>
