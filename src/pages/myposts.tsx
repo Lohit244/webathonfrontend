@@ -116,7 +116,7 @@ const Card = ({ post, token }: any) => {
 
   return (
     <>
-      <div key={post._id} className="flex flex-col w-96 mx-auto gap-4 md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2">
+      <div key={post._id} className="flex flex-col w-96 mx-auto gap-4 md:justify-between border-slate-900 border-2 rounded-md sm:p-4 sm:m-4 p-2">
         <div className="flex flex-col items-center">
           <div className="font-black text-4xl">
             <h2>{post.eventName}</h2>
