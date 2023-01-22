@@ -16,8 +16,6 @@ const Navbar = () => {
     }
   })
 
-
-
   return (
     <>
       <div className="flex flex-row-reverse justify-between md:mx-16 py-2 sm:mx-8">
@@ -26,7 +24,7 @@ const Navbar = () => {
             My Postings
           </Link>
         )}
-        <div className={`${loggedIn ? "bg-red-500" : "bg-blue-500"} ${loggedIn ? "hover:bg-red-600" : "hover:bg-blue-600"} transition-colors duration-300 rounded-sm px-[2ch]`} onClick={
+        <div className={`${loggedIn ? "bg-red-500" : "bg-blue-500 py-2"} ${loggedIn ? "hover:bg-red-600" : "hover:bg-blue-600"} transition-colors duration-300 rounded-sm px-[2ch]`} onClick={
           () => {
             if (loggedIn) {
               setLoggedIn(false)

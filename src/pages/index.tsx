@@ -52,22 +52,22 @@ export default function Home({ data }: {
 
 const Card = ({ name, numTarget, numAccpt, desc }: { name: string, numTarget: number, numAccpt: number, desc: string }) => {
   return (
-    <div className="md:max-w-[50%] flex flex-col gap-4 md:flex-row md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2 m-2">
+    <div className="flex flex-col w-96 mx-auto gap-4 md:flex-row md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2">
       <div>
         <div className="font-black text-4xl">
           <h2>{name}</h2>
         </div>
         <div>
-          <p>Accepted: {numAccpt}</p>
-          <p> Required: {numTarget}</p>
+          <div className="bg-blue-600 m-2 rounded-sm w-24">Accepted: {numAccpt}</div>
+          <div className="bg-green-600 m-2 rounded-sm w-24">Required: {numTarget}</div>
         </div>
-        <div className="text-justify font-light">
+        <div className="text-justify m-2 font-light">
           {desc}
         </div>
       </div>
-      <div className="bg-blue-500 font-bold rounded-sm items-center flex font-white w-max px-4 py-2 hover:bg-blue-600 transition-colors duration-300 h-max my-auto">
+      <button className="bg-blue-500 font-bold rounded-sm items-center flex font-white w-max px-4 py-2 hover:bg-blue-600 transition-colors duration-300 h-max my-auto">
         Apply
-      </div>
+      </button>
     </div>
   )
 }
