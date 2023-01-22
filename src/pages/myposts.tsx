@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 export default function MyPosts() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [token, setToken] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [posts, setPosts] = useState([])
   const router = useRouter();
 
   useEffect(() => {
@@ -14,25 +14,30 @@ export default function MyPosts() {
       if (!localtoken) {
         setLoggedIn(false)
       } else {
-        setToken(localtoken)
+        setLoggedIn(true)
       }
     }
   })
 
-
-  const [myPosts, setMyPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const getPosts = async () => {
     setLoading(true);
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/posts`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/event/user`, {
+                        method: "GET",
+                        headers: {
+                          "Content-Type": "application/json",
+                          'x-auth-token': localStorage.getItem('token') || ''
+                        },
+                      })
+    const data = await res.json()
+    setPosts(data.userEvents)
     setLoading(false)
   }
+
+  useEffect(() => {
+    if(loggedIn) getPosts();
+  }, [loggedIn])
+
+  const [loading, setLoading] = useState(true);
 
   const Spinner = () => {
     return (
@@ -53,11 +58,12 @@ export default function MyPosts() {
 
   if (!loggedIn) {
     return <Link href="/login"> Please Login To Continue</Link>
-  }
+  } 
+
   return (
     <div>
       <h1>My Posts</h1>
-      {loading && <p>Loading...<Spinner /></p>}
+      {loading ? <div>Loading...<Spinner /></div> : posts.map((post, index) => <div>Post number{index} is</div>)}
     </div>
   )
 
