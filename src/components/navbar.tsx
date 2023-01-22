@@ -1,12 +1,11 @@
 import autoAnimate from "@formkit/auto-animate";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [vis, setVis] = useState(false);
 
   useEffect(() => {
     if (localStorage) {
@@ -16,15 +15,10 @@ const Navbar = () => {
       }
     }
   });
-  const parent = useRef(null);
-  useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, [parent]);
 
   return (<>
-    <div ref={parent}>
-      <div onClick={() => { setVis(!vis) }}>⬇️ </div>
-      {vis && <div className={`flex flex-col-reverse justify-end md:mx-16 py-2 sm:mx-8 sm:flex-row gap-2 overflow-hidden`}>
+    <div>
+      <div className={`flex flex-col-reverse justify-end md:mx-16 py-2 sm:mx-8 sm:flex-row gap-2 overflow-hidden`}>
         {loggedIn && (
           <>
             <Link
@@ -67,7 +61,6 @@ const Navbar = () => {
           {loggedIn ? "Logout" : <Link href="/login">Login</Link>}
         </button>
       </div>
-      }
     </div>
   </>
   );
