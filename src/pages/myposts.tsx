@@ -7,6 +7,7 @@ export default function MyPosts() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [posts, setPosts] = useState<any[]>([])
   const router = useRouter();
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (localStorage) {
@@ -15,6 +16,7 @@ export default function MyPosts() {
         setLoggedIn(false)
       } else {
         setLoggedIn(true)
+        setToken(localtoken);
       }
     }
   })
@@ -66,7 +68,7 @@ export default function MyPosts() {
       <h1 className="font-bold text-3xl mx-2">My Posts</h1>
       <div className="flex flex-row flex-wrap p-2 gap-2 md:justify-evenly justify-center">
         {loading ? <div>Loading...<Spinner /></div> : posts.map((post) => {
-          return <Card post={post} key={post._id} />
+          return <Card post={post} key={post._id} token={token} />
         })}
       </div>
     </div>
@@ -74,7 +76,16 @@ export default function MyPosts() {
 
 }
 
-const Card = ({ post }: any) => {
+const Card = ({ post, token }: any) => {
+  const [postData, setPostData] = useState<any[]>();
+  useEffect(() => {
+    const headers = new Headers;
+    headers.set('x-auth-token', token);
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/application/${post._id}`, {
+      headers: headers
+    }).then(res => res.json()).then(data => setPostData(data))
+  }, [post]);
+
   return (
     <>
       <div key={post._id} className="flex flex-col w-96 mx-auto gap-4 md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2">
@@ -89,6 +100,14 @@ const Card = ({ post }: any) => {
         </div>
         <div className="text-justify m-2 font-light h-full">
           {post.description}
+        </div>
+        <div>
+          {postData && postData.map((data: any) => {
+            return <div>
+              {JSON.stringify(data)}
+            </div>
+          })}
+
         </div>
       </div>
     </>
