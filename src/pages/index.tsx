@@ -42,7 +42,7 @@ export default function Home({ data }: {
       <main>
         <div ref={parent} className="flex flex-col md:flex-row flex-wrap p-2 gap-2 md:justify-evenly justify-center">
           {data.map((event) => {
-            return <Card key={event._id} numTarget={event.usersRequired} numAccpt={event.usersAccepted} name={event.eventName} desc={event.description} />
+            return <Card key={event._id} cardKey={event._id} numTarget={event.usersRequired} numAccpt={event.usersAccepted} name={event.eventName} desc={event.description} />
           })}
         </div>
       </main>
@@ -50,7 +50,13 @@ export default function Home({ data }: {
   )
 }
 
-const Card = ({ name, numTarget, numAccpt, desc }: { name: string, numTarget: number, numAccpt: number, desc: string }) => {
+const Card = ({ cardKey, name, numTarget, numAccpt, desc }: { cardKey: string, name: string, numTarget: number, numAccpt: number, desc: string }) => {
+  const [message, setMessage] = useState("")
+
+  useEffect(() => {
+    setMessage(localStorage.getItem("message") || "")
+  }, [])
+
   return (
     <div className="flex flex-col w-96 mx-auto gap-4 md:flex-row md:justify-between border-neutral-500 border-2 rounded-md sm:p-4 sm:m-4 p-2">
       <div>
@@ -64,12 +70,33 @@ const Card = ({ name, numTarget, numAccpt, desc }: { name: string, numTarget: nu
         <div className="text-justify m-2 font-light">
           {desc}
         </div>
+        <input 
+          value={message || ""} 
+          onChange={(e) => {setMessage(e.target.value); localStorage.setItem("message", message || "");}}
+          placeholder="Send a message along with your application (Optional)"
+          style={{color: 'black'}}
+        />
       </div>
-      <button className="bg-blue-500 font-bold rounded-sm items-center flex font-white w-max px-4 py-2 hover:bg-blue-600 transition-colors duration-300 h-max my-auto">
+      <button onClick={() => applyToEvent(cardKey, message || "")} className="bg-blue-500 font-bold rounded-sm items-center flex font-white w-max px-4 py-2 hover:bg-blue-600 transition-colors duration-300 h-max my-auto">
         Apply
       </button>
     </div>
   )
+}
+
+export const applyToEvent = async (key: string, message: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/application/${key}`, {
+                      method: 'POST',
+                      headers: {
+                        'x-auth-token': localStorage.getItem('token') || ''
+                      },
+                      body: JSON.stringify({
+                        message: message
+                      })
+                    })
+
+  const data = await res.json()
+  console.log(data);
 }
 
 export const getStaticProps: GetStaticProps = async () => {
