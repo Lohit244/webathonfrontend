@@ -12,6 +12,10 @@ type apiResponse = {
 export default function Home({ data }: {
   data: apiResponse[],
 }) {
+  const parent = useRef(null)
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current)
+  }, [parent])
   if (!data || !data.length || data.length < 1) {
     return (
       <>
@@ -27,10 +31,6 @@ export default function Home({ data }: {
       </>
     )
   }
-  const parent = useRef(null)
-  useEffect(() => {
-    parent.current && autoAnimate(parent.current)
-  }, [parent])
   return (
     <>
       <Head>
