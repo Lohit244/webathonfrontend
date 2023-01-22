@@ -1,10 +1,12 @@
+import autoAnimate from "@formkit/auto-animate";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [vis, setVis] = useState(false);
 
   useEffect(() => {
     if (localStorage) {
@@ -14,11 +16,15 @@ const Navbar = () => {
       }
     }
   });
-  return (
-    <>
-      <div className="flex flex-col-reverse justify-end md:mx-16 py-2 sm:mx-8 sm:flex-row gap-2">
-        <div>
-        </div>
+  const parent = useRef(null);
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
+  return (<>
+    <div ref={parent}>
+      <div onClick={() => { setVis(!vis) }}>⬇️ </div>
+      {vis && <div className={`flex flex-col-reverse justify-end md:mx-16 py-2 sm:mx-8 sm:flex-row gap-2 overflow-hidden`}>
         {loggedIn && (
           <>
             <Link
@@ -39,6 +45,12 @@ const Navbar = () => {
               Post an event
             </Link>
 
+            <Link
+              href="/pendingApplications"
+              className="justify-center flex bg-amber-700 hover:bg-amber-800 transition-colors duration-300 rounded-sm px-[2ch] py-1 items-center">
+              Pending applications
+            </Link>
+
           </>
         )}
         <button
@@ -55,7 +67,9 @@ const Navbar = () => {
           {loggedIn ? "Logout" : <Link href="/login">Login</Link>}
         </button>
       </div>
-    </>
+      }
+    </div>
+  </>
   );
 };
 
