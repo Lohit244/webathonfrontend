@@ -76,6 +76,7 @@ const Card = ({ token, name, numTarget, numAccpt, event, desc }: { token: string
     setLoading(true);
     const headers = new Headers;
     headers.set('x-auth-token', token);
+    headers.set('Content-Type', 'application/json');
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/application/${event}`, {
       method: "POST",
       headers: headers,
