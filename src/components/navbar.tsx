@@ -41,7 +41,7 @@ const Navbar = () => {
 
             <Link
               href="/pendingApplications"
-              className="justify-center flex bg-green-700 hover:bg-green-800 transition-colors duration-300 rounded-sm px-[2ch] py-1 items-center">
+              className="justify-center flex bg-amber-700 hover:bg-amber-800 transition-colors duration-300 rounded-sm px-[2ch] py-1 items-center">
               Pending applications
             </Link>
           </>
